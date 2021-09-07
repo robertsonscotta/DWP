@@ -8,8 +8,6 @@ from scipy.stats import zscore
 # Read dataset (CSV)
 df_data = pd.read_csv('data/transaction_data.csv')
 df_chem_list = pd.read_csv('data/chem_list.csv')
-df_nodes = pd.read_csv('data/nodes.csv')
-df_edges = pd.read_csv('data/edges.csv')
 
 # Set header title
 st.title('Network Graph Visualization of the Federal Chemical Market')
@@ -17,11 +15,10 @@ st.title('Network Graph Visualization of the Federal Chemical Market')
 # Define list of selection options and sort alphabetically
 chem_list = df_chem_list['Chemicals'].tolist()
 chem_list.sort()
-chem_list.insert(0,'')
+chem_list.insert(0,'All')
 
 # Group transaction data by chemical, agency, contractor, and sum
 df_data['amount'] = pd.to_numeric(df_data['amount'], errors='coerce')
-df_data['amount'].dtypes
 x = df_data.groupby(['chemical', 'agency', 'contractor']).agg({'amount': ['sum']})
 x = x.reset_index()
 
@@ -29,7 +26,7 @@ x = x.reset_index()
 selected_chem = st.selectbox('Choose a chemical to explore!', chem_list)
 
 # Set info message on initial site load
-if selected_chem == '':
+if selected_chem == 'All':
     g = Network(
                    height='1000px',
                    width='100%',                                                       
@@ -60,12 +57,9 @@ if selected_chem == '':
         weight_list.append(d[numbers][0])
     floor = min(weight_list)
     wt_list = [x-floor for x in weight_list]
-
-    for t in range(len(agen_list)):
-        agen_list[t] = df_track.index[df_track[0] == agen_list[t]].tolist()[0]
-
-    for u in range(len(cont_list)):
-        cont_list[u] = df_track.index[df_track[0] == cont_list[u]].tolist()[0]
+        
+    agen_list = [df_track.index[df_track[0] == agen_list[t]].tolist()[0] for t in range(len(agen_list))]
+    cont_list = [df_track.index[df_track[0] == cont_list[u]].tolist()[0] for u in range(len(cont_list))]
 
     for i in range(len(agen_list)):
         g.add_edge(agen_list[i], cont_list[i], value=wt_list[i])
@@ -130,11 +124,8 @@ else:
     floor = min(weight_list)
     wt_list = [x-floor for x in weight_list]
 
-    for t in range(len(agen_list)):
-        agen_list[t] = df_track.index[df_track[0] == agen_list[t]].tolist()[0]
-
-    for u in range(len(cont_list)):
-        cont_list[u] = df_track.index[df_track[0] == cont_list[u]].tolist()[0]
+    agen_list = [df_track.index[df_track[0] == agen_list[t]].tolist()[0] for t in range(len(agen_list))]
+    cont_list = [df_track.index[df_track[0] == cont_list[u]].tolist()[0] for u in range(len(cont_list))]
 
     for i in range(len(agen_list)):
         g.add_edge(agen_list[i], cont_list[i], value=wt_list[i])

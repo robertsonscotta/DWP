@@ -1,0 +1,212 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 1000px;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 1000px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#F17B7B", "font": {"color": "white"}, "id": 0, "label": "DEFENSE LOGISTICS AGENCY", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 1, "label": "DEPT OF THE AIR FORCE", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 2, "label": "DEPT OF THE ARMY", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 3, "label": "DEPT OF THE NAVY", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 4, "label": "FEDERAL ACQUISITION SERVICE", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 5, "label": "FEDERAL BUREAU OF INVESTIGATION", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 6, "label": "FEDERAL PRISON SYSTEM / BUREAU OF PRISONS", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 7, "label": "FOREST SERVICE", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 8, "label": "J. F. KENNEDY CENTER FOR THE PERFORMING ARTS", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 9, "label": "NATIONAL INSTITUTES OF HEALTH", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 10, "label": "NATIONAL OCEANIC AND ATMOSPHERIC ADMINISTRATION", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 11, "label": "NATIONAL PARK SERVICE", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 12, "label": "U.S. COAST GUARD", "shape": "dot"}, {"color": "#F17B7B", "font": {"color": "white"}, "id": 13, "label": "VETERANS AFFAIRS, DEPARTMENT OF", "shape": "dot"}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 14, "label": "A.M.S. NETWORK  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 15, "label": "ACI-LUBESCO", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 16, "label": "AKTION, INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 17, "label": "AKZO NOBEL N.V.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 18, "label": "ALLIED CONSTRUCTION \u0026 WOODWORKING SALES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 19, "label": "APPLIED INDUSTRIAL TECHNOLOGIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 20, "label": "ARMITE LABORATORIES INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 21, "label": "ATLANTIC DIVING SUPPLY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 22, "label": "BALTIMORE AUTO SUPPLY COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 23, "label": "BLUE ASH INDUSTRIAL SUPPLY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 24, "label": "CARWELL PRODUCTS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 25, "label": "CERALUSA  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 26, "label": "CHEMCO INDUSTRIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 27, "label": "CORROSION TECHNOLOGIES CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 28, "label": "DEFT  INCORPORATED", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 29, "label": "DEKOL LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 30, "label": "DELAWARE PAINT COMPANY  LTD THE", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 31, "label": "EMULTEC  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 32, "label": "ESGARD INCORPORATED", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 33, "label": "FBC ENTERPRISES LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 34, "label": "FEDERAL REALTY INVESTMENT COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 35, "label": "FORESPAR PRODUCTS CORP", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 36, "label": "GINETECH INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 37, "label": "HY-TEST INDUSTRIES  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 38, "label": "IBIDE CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 39, "label": "INDUSTRIAL SUPPLY SOLUTIONS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 40, "label": "INNOSPEC FUEL SPECIALTIES LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 41, "label": "INTEGRITY TOOL \u0026 FASTENER  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 42, "label": "INTERNATIONAL PAINT LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 43, "label": "ISO GROUP  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 44, "label": "J.G.B. ENTERPRISES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 45, "label": "KAMPI COMPONENTS CO.  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 46, "label": "KELLSPORT INDUSTRIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 47, "label": "LINMARR ASSOCIATES INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 48, "label": "LYNN ELECTRONICS CORP.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 49, "label": "M. O. DION \u0026 SONS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 50, "label": "METALAST SURFACE TECHNOLOGY  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 51, "label": "NOBLE SALES CO.  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 52, "label": "OSHKOSH CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 53, "label": "P \u0026 C INDUSTRIAL SUPPLIES INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 54, "label": "PACIFIC STAR CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 55, "label": "PACKAGING SYSTEMS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 56, "label": "PANCAR INDUSTRIAL SUPPLY CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 57, "label": "PATTONAIR USA  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 58, "label": "PATTONAIR USA INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 59, "label": "PETROLEUM SERVICE COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 60, "label": "PHOENIX TRADING INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 61, "label": "PIONEER INDUSTRIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 62, "label": "POND CONSTRUCTORS  INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 63, "label": "PPG INDUSTRIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 64, "label": "PRC - DESOTO INTERNATIONAL  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 65, "label": "QUANTUM CHEMICAL  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 66, "label": "R.S. HUGHES COMPANY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 67, "label": "ROYCO PACKAGING  INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 68, "label": "S I T CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 69, "label": "SANTIE\u0027S WHOLESALE OIL COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 70, "label": "SCIENCE APPLICATIONS INTERNATIONAL CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 71, "label": "SPECIALTY COATINGS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 72, "label": "SPENERGY LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 73, "label": "STEVEN INDUSTRIES INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 74, "label": "SZY HOLDINGS  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 75, "label": "THE BOEING COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 76, "label": "THE LIGHTHOUSE FOR THE BLIND", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 77, "label": "UNICAL DEFENSE INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 78, "label": "VERTEX LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 79, "label": "W. S. DARLEY \u0026 CO.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 80, "label": "WALTER LOUIS CHEMICALS \u0026 ASSOCIATES INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 81, "label": "WOOD PAINT COMPANY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 82, "label": "ZELOGTEK LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 83, "label": "A \u0026 L SANCHEZ PAINTING AND CONSTRUCTION INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 84, "label": "ADJOINER TRUJILLO JV", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 85, "label": "AHW TSC JV1", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 86, "label": "BNJ BUILDERS  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 87, "label": "CHEROKEE NATION ENVIRONMENTAL SOLUTIONS  L.L.C.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 88, "label": "DIVINE KUSTOMS CONSTRUCTION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 89, "label": "ECLIPSE CONSTRUCTORS LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 90, "label": "KNOCK OUT-TRUJILLO SPECIAL COATINGS JV", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 91, "label": "MDM CONSTRUCTION  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 92, "label": "ML BUILDERS  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 93, "label": "NICKS PAINTING", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 94, "label": "OSTROM PAINTING \u0026 SANDBLASTING  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 95, "label": "PRO-MARK SERVICES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 96, "label": "PROTECTIVE COATINGS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 97, "label": "SANKO AIR SELTEC CO.  LTD.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 98, "label": "SENTRY BOX SERVICES  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 99, "label": "SMITH  ROBERT", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 100, "label": "STARLIGHT CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 101, "label": "SWEAT LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 102, "label": "THE SINGLETON CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 103, "label": "TRIAD LOGISTICS SERVICES CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 104, "label": "TUNHEIM CONSTRUCTION  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 105, "label": "UNITY CONTRACTOR SERVICES INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 106, "label": "VANGUARD PACIFIC LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 107, "label": "WEIL CONSTRUCTION  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 108, "label": "YAMAGISHI REFORM CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 109, "label": "ALEUT FIELD SERVICES  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 110, "label": "BOSUNG INDUSTRY CO.  LTD.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 111, "label": "ECOLAB INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 112, "label": "LOGIS-TECH  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 113, "label": "TOTALL METAL RECYCLING  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 114, "label": "ADIRONDACK ELECTRONICS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 115, "label": "AMENTUM SERVICES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 116, "label": "BYERLY AND COOK", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 117, "label": "CHASE SUPPLY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 118, "label": "EHB SUPPLY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 119, "label": "ELITE PROCUREMENT  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 120, "label": "HAKUTO CO.  LTD.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 121, "label": "JMN SPECIALTIES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 122, "label": "PROTECTIVE COATING CONSULTANTS INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 123, "label": "THE SHERWIN-WILLIAMS COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 124, "label": "UP ENTERPRISES LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 125, "label": "URETHANE CONTRACTORS SUPPLY CO (INC)", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 126, "label": "Unknown", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 127, "label": "VES COMPANY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 128, "label": "W. W. GRAINGER  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 129, "label": "WESTBAY AUTO PARTS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 130, "label": "F \u0026 M MICRO PRODUCTS  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 131, "label": "KAUFMAN COMPANY  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 132, "label": "RITE-KEM  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 133, "label": "LINE-X LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 134, "label": "TIMBERHORSE INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 135, "label": "DANAHER CORPORATION", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 136, "label": "SOUTHEASTERN TOWERS  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 137, "label": "INTERNATIONAL CHEMSTAR INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 138, "label": "C \u0026 E SERVICES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 139, "label": "LINE-X OF LONGVIEW  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 140, "label": "LOGISTICAL SUPPORT TEAM INTERNATIONAL  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 141, "label": "AUTOMATION PRECISION TECHNOLOGY  LLC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 142, "label": "CLARKE POWER SERVICES  INC.", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 143, "label": "PAXTON COMPANY", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 144, "label": "SHOWBOAT CUSTOM COATING INC", "shape": "dot", "value": 0.1}, {"color": "#6F7CDB", "font": {"color": "white"}, "id": 145, "label": "R. H. WHITE COMPANIES  INC.", "shape": "dot", "value": 0.1}]);
+        edges = new vis.DataSet([{"from": 0, "to": 14, "value": 0.10124204335037601}, {"from": 0, "to": 15, "value": 0.0004140076785175417}, {"from": 0, "to": 16, "value": 0.0013059458413227643}, {"from": 0, "to": 17, "value": 0.00027450942016504776}, {"from": 0, "to": 18, "value": 0.0006295185711379381}, {"from": 0, "to": 19, "value": 2.264695116710458e-05}, {"from": 0, "to": 20, "value": 2.229083239380092e-06}, {"from": 0, "to": 21, "value": 0.01058967941471467}, {"from": 0, "to": 22, "value": 0.000318906490603732}, {"from": 0, "to": 23, "value": 5.399480179085758e-05}, {"from": 0, "to": 24, "value": 0.0033334607153507334}, {"from": 0, "to": 25, "value": 6.532907107745234e-05}, {"from": 0, "to": 26, "value": 0.00033662387683372486}, {"from": 0, "to": 27, "value": 0.0021567597019266083}, {"from": 0, "to": 28, "value": 0.0036888734186486805}, {"from": 0, "to": 29, "value": 0.00016899296967864963}, {"from": 0, "to": 30, "value": 0.0013241441714627322}, {"from": 0, "to": 31, "value": 0.0016817568810858774}, {"from": 0, "to": 32, "value": 0.0043302884127487395}, {"from": 0, "to": 33, "value": 0.0017958560142815327}, {"from": 0, "to": 34, "value": 0.00012684862582884593}, {"from": 0, "to": 35, "value": 0.000262584948260397}, {"from": 0, "to": 36, "value": 6.860668546709858e-05}, {"from": 0, "to": 37, "value": 0.001455444355380836}, {"from": 0, "to": 38, "value": 7.429739003331215e-05}, {"from": 0, "to": 39, "value": 1.5174918470334253e-05}, {"from": 0, "to": 40, "value": 0.00010418111522736417}, {"from": 0, "to": 41, "value": 9.911115872174303e-07}, {"from": 0, "to": 42, "value": 0.00025133600062623995}, {"from": 0, "to": 43, "value": 0.00016109476927905764}, {"from": 0, "to": 44, "value": 0.000383818058311447}, {"from": 0, "to": 45, "value": 0.0007250152344562}, {"from": 0, "to": 46, "value": 0.00222419317795966}, {"from": 0, "to": 47, "value": 0.0010768789388315159}, {"from": 0, "to": 48, "value": 0.0005926477221907811}, {"from": 0, "to": 49, "value": 0.001678189231819227}, {"from": 0, "to": 50, "value": 0.0002799324115257962}, {"from": 0, "to": 51, "value": 0.00014250375394361803}, {"from": 0, "to": 52, "value": 0.00014123494314000062}, {"from": 0, "to": 53, "value": 9.193591614720109e-06}, {"from": 0, "to": 54, "value": 9.828731282052194e-06}, {"from": 0, "to": 55, "value": 0.00010069746593524553}, {"from": 0, "to": 56, "value": 7.246084513626294e-05}, {"from": 0, "to": 57, "value": 0.0006796622971748101}, {"from": 0, "to": 58, "value": 0.0001574945186237353}, {"from": 0, "to": 59, "value": 0.02201092582874299}, {"from": 0, "to": 60, "value": 3.997502982300283e-05}, {"from": 0, "to": 61, "value": 0.00022947588838109767}, {"from": 0, "to": 62, "value": 0.9988997005382517}, {"from": 0, "to": 63, "value": 0.00938482093431367}, {"from": 0, "to": 64, "value": 0.00018841693581017616}, {"from": 0, "to": 65, "value": 0.000737814950850374}, {"from": 0, "to": 66, "value": 0.00033769590448032294}, {"from": 0, "to": 67, "value": 0.002022462393044211}, {"from": 0, "to": 68, "value": 9.401036307010724e-05}, {"from": 0, "to": 69, "value": 9.614531347096333e-05}, {"from": 0, "to": 70, "value": 0.12662804072100123}, {"from": 0, "to": 71, "value": 4.319625262136362e-05}, {"from": 0, "to": 72, "value": 0.0003381188414148806}, {"from": 0, "to": 73, "value": 0.008886904917631389}, {"from": 0, "to": 74, "value": 0.00016921750807202818}, {"from": 0, "to": 75, "value": 1.636971531043807e-05}, {"from": 0, "to": 76, "value": 0.6851575246954765}, {"from": 0, "to": 77, "value": 0.0002754052240888927}, {"from": 0, "to": 78, "value": 5.63382835969406e-05}, {"from": 0, "to": 79, "value": 0.01313993361956775}, {"from": 0, "to": 80, "value": 2.1900056288964853e-05}, {"from": 0, "to": 81, "value": 0.00015810777717881197}, {"from": 0, "to": 82, "value": 0.00016654301937341076}, {"from": 1, "to": 83, "value": 0.09118100206189861}, {"from": 1, "to": 84, "value": 0.09524461977937547}, {"from": 1, "to": 85, "value": 0.47892426918878483}, {"from": 1, "to": 86, "value": 0.5820226325280946}, {"from": 1, "to": 87, "value": 0.0028959111628607537}, {"from": 1, "to": 88, "value": 0.36518035984332786}, {"from": 1, "to": 89, "value": 0.007341844337706627}, {"from": 1, "to": 90, "value": 0.0015436457971374218}, {"from": 1, "to": 91, "value": 0.4053281545579608}, {"from": 1, "to": 92, "value": 0.005080729940185713}, {"from": 1, "to": 93, "value": 0.0012401829661811692}, {"from": 1, "to": 94, "value": 0.1358737303828628}, {"from": 1, "to": 63, "value": 0.00016906771790770048}, {"from": 1, "to": 95, "value": 0.00013838437757174304}, {"from": 1, "to": 96, "value": 0.00022314020498970244}, {"from": 1, "to": 97, "value": 0.005944435006666443}, {"from": 1, "to": 98, "value": 0.5169795787204412}, {"from": 1, "to": 99, "value": 0.12270809849836886}, {"from": 1, "to": 100, "value": 0.1347695392635111}, {"from": 1, "to": 101, "value": 0.1145446089974975}, {"from": 1, "to": 102, "value": 0.0005337345162985396}, {"from": 1, "to": 103, "value": 0.009449920620845403}, {"from": 1, "to": 104, "value": 0.2033052526822441}, {"from": 1, "to": 105, "value": 0.06726167655373769}, {"from": 1, "to": 106, "value": 0.47509374038656427}, {"from": 1, "to": 107, "value": 0.007900530077200096}, {"from": 1, "to": 108, "value": 0.04330285519742645}, {"from": 2, "to": 109, "value": 0.02390135597515429}, {"from": 2, "to": 110, "value": 0.00304350278938581}, {"from": 2, "to": 111, "value": 0.0002664618701604393}, {"from": 2, "to": 112, "value": 0.0072582391043450045}, {"from": 2, "to": 72, "value": 0.0002522288674880746}, {"from": 2, "to": 113, "value": 0.05553022131779399}, {"from": 3, "to": 114, "value": 6.363365201170201e-05}, {"from": 3, "to": 115, "value": 0.004551629814088687}, {"from": 3, "to": 116, "value": 0.0003354104296496574}, {"from": 3, "to": 117, "value": 1.6752855054258387e-05}, {"from": 3, "to": 118, "value": 4.150318320528257e-05}, {"from": 3, "to": 119, "value": 0.00043945482463883523}, {"from": 3, "to": 32, "value": 7.952829753604673e-06}, {"from": 3, "to": 120, "value": 0.00013781855256869702}, {"from": 3, "to": 121, "value": 2.1762161225846732e-06}, {"from": 3, "to": 59, "value": 0.001824881676799034}, {"from": 3, "to": 122, "value": 8.896214082620979e-06}, {"from": 3, "to": 123, "value": 1.1910814566085115e-05}, {"from": 3, "to": 124, "value": 1.0023458495656001e-05}, {"from": 3, "to": 125, "value": 0.005505746020955937}, {"from": 3, "to": 126, "value": 11.687802979327854}, {"from": 3, "to": 127, "value": 0.0014089790058497142}, {"from": 3, "to": 128, "value": 1.2319506749458586e-06}, {"from": 3, "to": 129, "value": 2.652020173965486e-06}, {"from": 4, "to": 130, "value": 0.0}, {"from": 4, "to": 131, "value": 5.007543934398839e-06}, {"from": 4, "to": 96, "value": 0.9637226728950874}, {"from": 4, "to": 132, "value": 8.536570834938306e-07}, {"from": 5, "to": 133, "value": 0.00023727481608354362}, {"from": 5, "to": 134, "value": 8.876961640927328e-05}, {"from": 6, "to": 135, "value": 0.00045529146318804004}, {"from": 7, "to": 136, "value": 0.0002820215437587259}, {"from": 8, "to": 137, "value": 0.0001650172156408003}, {"from": 9, "to": 138, "value": 0.0003974548373885667}, {"from": 10, "to": 137, "value": 0.0011467874770502706}, {"from": 10, "to": 139, "value": 5.499340288633858e-05}, {"from": 11, "to": 140, "value": 0.0002660213108536258}, {"from": 12, "to": 141, "value": 0.0001524028278616918}, {"from": 12, "to": 142, "value": 4.205564457601674e-05}, {"from": 12, "to": 143, "value": 7.848989925010597e-05}, {"from": 12, "to": 144, "value": 0.000376014284456605}, {"from": 13, "to": 145, "value": 0.0034826176490929117}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.33,
+            "damping": 0.95,
+            "nodeDistance": 420,
+            "springConstant": 0.1,
+            "springLength": 110
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

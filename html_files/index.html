@@ -1,0 +1,116 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 800px;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "id": "ACUITY SPECIALTY PRODUCTS  INC", "label": "ACUITY SPECIALTY PRODUCTS  INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FEDERAL ACQUISITION SERVICE", "label": "FEDERAL ACQUISITION SERVICE", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NOBLE SALES CO.  INC.", "label": "NOBLE SALES CO.  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "RITE-KEM  INC.", "label": "RITE-KEM  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ADDCON GMBH", "label": "ADDCON GMBH", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DEPT OF THE AIR FORCE", "label": "DEPT OF THE AIR FORCE", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "AGRI-CYCLE ENERGY LLC", "label": "AGRI-CYCLE ENERGY LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ALASKA GARDEN \u0026 PET SUPPLY  INC", "label": "ALASKA GARDEN \u0026 PET SUPPLY  INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ARCTIC SLOPE REGIONAL CORPORATION", "label": "ARCTIC SLOPE REGIONAL CORPORATION", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FISHER DARVILLE HOLDINGS LTD", "label": "FISHER DARVILLE HOLDINGS LTD", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "CLARIANT AG", "label": "CLARIANT AG", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "EAST CORE  K.K.", "label": "EAST CORE  K.K.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FLEET MANAGEMENT SERVICES  LLC", "label": "FLEET MANAGEMENT SERVICES  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FYVE STAR INC", "label": "FYVE STAR INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "GENERAL ATOMIC TECHNOLOGIES CORPORATION", "label": "GENERAL ATOMIC TECHNOLOGIES CORPORATION", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "INTEGRATED DEICING SERVICES  LLC", "label": "INTEGRATED DEICING SERVICES  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "KILFROST GROUP PLC", "label": "KILFROST GROUP PLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "KZN INSAAT TAAHHUT TICARET ITHALAT IHRACAT SANAYI LTD STI", "label": "KZN INSAAT TAAHHUT TICARET ITHALAT IHRACAT SANAYI LTD STI", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "OPUS 12 INCORPORATED", "label": "OPUS 12 INCORPORATED", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ORISON MARKETING L L C", "label": "ORISON MARKETING L L C", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SEIKO  K.K.", "label": "SEIKO  K.K.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SENECA MINERAL COMPANY", "label": "SENECA MINERAL COMPANY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SMART MANUFACTURING  INC.", "label": "SMART MANUFACTURING  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SURFELLENT LLC", "label": "SURFELLENT LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "TATTERSALL  INC.", "label": "TATTERSALL  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ALCOM MEDIKAL BILGISAYAR INS TUR OTO TEKS PAZ SAN VE TIC LT", "label": "ALCOM MEDIKAL BILGISAYAR INS TUR OTO TEKS PAZ SAN VE TIC LT", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DEFENSE LOGISTICS AGENCY", "label": "DEFENSE LOGISTICS AGENCY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "BOSMA INDUSTRIES FOR THE BLIND  INC.", "label": "BOSMA INDUSTRIES FOR THE BLIND  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DEFENSE ENERGY SYNDICATE LLC", "label": "DEFENSE ENERGY SYNDICATE LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DC GALAXY HOLDING C.V.", "label": "DC GALAXY HOLDING C.V.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DOW EUROPE GMBH", "label": "DOW EUROPE GMBH", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ECOLFER SRL", "label": "ECOLFER SRL", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "HY-TEST INDUSTRIES  LLC", "label": "HY-TEST INDUSTRIES  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "IZMIT BUYUKSEHIR BELEDIYESI", "label": "IZMIT BUYUKSEHIR BELEDIYESI", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NEXEO SOLUTIONS  LLC", "label": "NEXEO SOLUTIONS  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "REMONDIS INDUSTRIE SERVICE GMBH", "label": "REMONDIS INDUSTRIE SERVICE GMBH", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SCIENCE APPLICATIONS INTERNATIONAL CORPORATION", "label": "SCIENCE APPLICATIONS INTERNATIONAL CORPORATION", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SUD - MULL GMBH \u0026 CO. KG FUR ABFALLTRANSPORTE UND SONDERABFA", "label": "SUD - MULL GMBH \u0026 CO. KG FUR ABFALLTRANSPORTE UND SONDERABFA", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SUPPLYCORE INC.", "label": "SUPPLYCORE INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "TC CHEMICALS  LLC", "label": "TC CHEMICALS  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "THIRD COAST PACKAGING  INC.", "label": "THIRD COAST PACKAGING  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "VEOLIA ES (UK) LTD", "label": "VEOLIA ES (UK) LTD", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "WESTON SOLUTIONS HOLDINGS INC", "label": "WESTON SOLUTIONS HOLDINGS INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ALLEN  J. F. COMPANY", "label": "ALLEN  J. F. COMPANY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FEDERAL BUREAU OF INVESTIGATION", "label": "FEDERAL BUREAU OF INVESTIGATION", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "B\u0026H INTERNATIONAL LLC", "label": "B\u0026H INTERNATIONAL LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "U.S. SPECIAL OPERATIONS COMMAND (USSOCOM)", "label": "U.S. SPECIAL OPERATIONS COMMAND (USSOCOM)", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "BARRETT TRUCKING CO INC", "label": "BARRETT TRUCKING CO INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "VETERANS AFFAIRS, DEPARTMENT OF", "label": "VETERANS AFFAIRS, DEPARTMENT OF", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "MJL ENTERPRISES  LLC", "label": "MJL ENTERPRISES  LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "VETCORP  INC.", "label": "VETCORP  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "BRENNTAG NV", "label": "BRENNTAG NV", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DEPT OF THE ARMY", "label": "DEPT OF THE ARMY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ERDMUTE DIEROLF", "label": "ERDMUTE DIEROLF", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FUDURIC GMBH \u0026 CO. KG", "label": "FUDURIC GMBH \u0026 CO. KG", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "KAPPA CONSTRUCTION  INC", "label": "KAPPA CONSTRUCTION  INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "JOHANN HALTERMANN LTD.", "label": "JOHANN HALTERMANN LTD.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "PROVIRON INDUSTRIES NV", "label": "PROVIRON INDUSTRIES NV", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "PROVIRON INDUSTRIES", "label": "PROVIRON INDUSTRIES", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SPECIALIZED GOVERNMENT SOURCING  INC.", "label": "SPECIALIZED GOVERNMENT SOURCING  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "CARGILL  INCORPORATED", "label": "CARGILL  INCORPORATED", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "FEDERAL PRISON SYSTEM / BUREAU OF PRISONS", "label": "FEDERAL PRISON SYSTEM / BUREAU OF PRISONS", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "CMC \u0026 MAINTENANCE  INC.", "label": "CMC \u0026 MAINTENANCE  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "DEPT OF THE NAVY", "label": "DEPT OF THE NAVY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "KING-TUESLEY ENTERPRISES  INC.", "label": "KING-TUESLEY ENTERPRISES  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SIMBIOTIX CONTROL INC", "label": "SIMBIOTIX CONTROL INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "SKOOKUM EDUCATIONAL PROGRAMS INC", "label": "SKOOKUM EDUCATIONAL PROGRAMS INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "WECSYS LLC", "label": "WECSYS LLC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "COMPASS MINERALS INTERNATIONAL  INC.", "label": "COMPASS MINERALS INTERNATIONAL  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NATIONAL PARK SERVICE", "label": "NATIONAL PARK SERVICE", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "EQUIPMENT SPECIALISTS  INC.", "label": "EQUIPMENT SPECIALISTS  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "GOVERNMENT MLO SUPPLIES USA INC", "label": "GOVERNMENT MLO SUPPLIES USA INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ROCKSLIDE MATERIALS  INC", "label": "ROCKSLIDE MATERIALS  INC", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "COUNTY OF SUSSEX", "label": "COUNTY OF SUSSEX", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ENVIROTECH SERVICES  INC.", "label": "ENVIROTECH SERVICES  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY", "label": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "U.S. COAST GUARD", "label": "U.S. COAST GUARD", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "HOMELAND INDUSTRIAL SUPPLY INC.", "label": "HOMELAND INDUSTRIAL SUPPLY INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "AGRICULTURAL RESEARCH SERVICE", "label": "AGRICULTURAL RESEARCH SERVICE", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "MICROENGINEERED METALS  INC.", "label": "MICROENGINEERED METALS  INC.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION", "label": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "NEI CORPORATION", "label": "NEI CORPORATION", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "ACUITY SPECIALTY PRODUCTS  INC", "to": "FEDERAL ACQUISITION SERVICE", "weight": 1}, {"from": "FEDERAL ACQUISITION SERVICE", "to": "NOBLE SALES CO.  INC.", "weight": 1}, {"from": "FEDERAL ACQUISITION SERVICE", "to": "RITE-KEM  INC.", "weight": 1}, {"from": "ADDCON GMBH", "to": "DEPT OF THE AIR FORCE", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "AGRI-CYCLE ENERGY LLC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "ALASKA GARDEN \u0026 PET SUPPLY  INC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "ARCTIC SLOPE REGIONAL CORPORATION", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "FISHER DARVILLE HOLDINGS LTD", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "CLARIANT AG", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "EAST CORE  K.K.", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "FLEET MANAGEMENT SERVICES  LLC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "FYVE STAR INC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "GENERAL ATOMIC TECHNOLOGIES CORPORATION", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "INTEGRATED DEICING SERVICES  LLC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "KILFROST GROUP PLC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "KZN INSAAT TAAHHUT TICARET ITHALAT IHRACAT SANAYI LTD STI", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "OPUS 12 INCORPORATED", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "ORISON MARKETING L L C", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "SEIKO  K.K.", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "SENECA MINERAL COMPANY", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "SMART MANUFACTURING  INC.", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "SURFELLENT LLC", "weight": 1}, {"from": "DEPT OF THE AIR FORCE", "to": "TATTERSALL  INC.", "weight": 1}, {"from": "ALCOM MEDIKAL BILGISAYAR INS TUR OTO TEKS PAZ SAN VE TIC LT", "to": "DEFENSE LOGISTICS AGENCY", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "BOSMA INDUSTRIES FOR THE BLIND  INC.", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "DEFENSE ENERGY SYNDICATE LLC", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "DC GALAXY HOLDING C.V.", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "DOW EUROPE GMBH", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "ECOLFER SRL", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "HY-TEST INDUSTRIES  LLC", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "IZMIT BUYUKSEHIR BELEDIYESI", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "NEXEO SOLUTIONS  LLC", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "NOBLE SALES CO.  INC.", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "REMONDIS INDUSTRIE SERVICE GMBH", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "SCIENCE APPLICATIONS INTERNATIONAL CORPORATION", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "SENECA MINERAL COMPANY", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "SUD - MULL GMBH \u0026 CO. KG FUR ABFALLTRANSPORTE UND SONDERABFA", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "SUPPLYCORE INC.", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "TC CHEMICALS  LLC", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "THIRD COAST PACKAGING  INC.", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "VEOLIA ES (UK) LTD", "weight": 1}, {"from": "DEFENSE LOGISTICS AGENCY", "to": "WESTON SOLUTIONS HOLDINGS INC", "weight": 1}, {"from": "ALLEN  J. F. COMPANY", "to": "FEDERAL BUREAU OF INVESTIGATION", "weight": 1}, {"from": "B\u0026H INTERNATIONAL LLC", "to": "U.S. SPECIAL OPERATIONS COMMAND (USSOCOM)", "weight": 1}, {"from": "U.S. SPECIAL OPERATIONS COMMAND (USSOCOM)", "to": "FYVE STAR INC", "weight": 1}, {"from": "BARRETT TRUCKING CO INC", "to": "VETERANS AFFAIRS, DEPARTMENT OF", "weight": 1}, {"from": "VETERANS AFFAIRS, DEPARTMENT OF", "to": "MJL ENTERPRISES  LLC", "weight": 1}, {"from": "VETERANS AFFAIRS, DEPARTMENT OF", "to": "VETCORP  INC.", "weight": 1}, {"from": "BRENNTAG NV", "to": "DEPT OF THE ARMY", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "ERDMUTE DIEROLF", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "FUDURIC GMBH \u0026 CO. KG", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "KAPPA CONSTRUCTION  INC", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "MJL ENTERPRISES  LLC", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "JOHANN HALTERMANN LTD.", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "PROVIRON INDUSTRIES NV", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "PROVIRON INDUSTRIES", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "RITE-KEM  INC.", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "SPECIALIZED GOVERNMENT SOURCING  INC.", "weight": 1}, {"from": "DEPT OF THE ARMY", "to": "TATTERSALL  INC.", "weight": 1}, {"from": "CARGILL  INCORPORATED", "to": "FEDERAL PRISON SYSTEM / BUREAU OF PRISONS", "weight": 1}, {"from": "CMC \u0026 MAINTENANCE  INC.", "to": "DEPT OF THE NAVY", "weight": 1}, {"from": "DEPT OF THE NAVY", "to": "KING-TUESLEY ENTERPRISES  INC.", "weight": 1}, {"from": "DEPT OF THE NAVY", "to": "NOBLE SALES CO.  INC.", "weight": 1}, {"from": "DEPT OF THE NAVY", "to": "SIMBIOTIX CONTROL INC", "weight": 1}, {"from": "DEPT OF THE NAVY", "to": "SKOOKUM EDUCATIONAL PROGRAMS INC", "weight": 1}, {"from": "DEPT OF THE NAVY", "to": "WECSYS LLC", "weight": 1}, {"from": "COMPASS MINERALS INTERNATIONAL  INC.", "to": "NATIONAL PARK SERVICE", "weight": 1}, {"from": "NATIONAL PARK SERVICE", "to": "EQUIPMENT SPECIALISTS  INC.", "weight": 1}, {"from": "NATIONAL PARK SERVICE", "to": "GOVERNMENT MLO SUPPLIES USA INC", "weight": 1}, {"from": "NATIONAL PARK SERVICE", "to": "ROCKSLIDE MATERIALS  INC", "weight": 1}, {"from": "NATIONAL PARK SERVICE", "to": "COUNTY OF SUSSEX", "weight": 1}, {"from": "ENVIROTECH SERVICES  INC.", "to": "NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY", "weight": 1}, {"from": "GENERAL ATOMIC TECHNOLOGIES CORPORATION", "to": "U.S. COAST GUARD", "weight": 1}, {"from": "HOMELAND INDUSTRIAL SUPPLY INC.", "to": "AGRICULTURAL RESEARCH SERVICE", "weight": 1}, {"from": "MICROENGINEERED METALS  INC.", "to": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION", "weight": 1}, {"from": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION", "to": "NEI CORPORATION", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.33,
+            "damping": 0.95,
+            "nodeDistance": 420,
+            "springConstant": 0.1,
+            "springLength": 110
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

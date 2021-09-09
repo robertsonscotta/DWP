@@ -10,7 +10,7 @@ df_data = pd.read_csv('data/transaction_data.csv')
 df_chem_list = pd.read_csv('data/chem_list.csv')
 
 # Set header title
-st.image('data/logo.png', width=300)
+st.image('data/logo.png', width=200)
 st.title('Network Graph Visualization of the Federal Chemical Market')
 
 # Define list of selection options and sort alphabetically

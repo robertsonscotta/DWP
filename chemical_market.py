@@ -164,6 +164,6 @@ st.markdown(
     <h4>Red circles represent federal agencies | Blue circles represent companies</h4>
     <h4>Line weight is proportional to contract size for the chemical group selected</h4>
     <h6></h6>
-    <h6>Data source: Deep Water Point, Aug 26. Data includes $2.8B worth of product-only contracts. Ask <b>your boy Scott</b> for more details.</h6>
+    <h6>Data source: Deep Water Point, Aug 26. Data includes $2.8B worth of product-only contracts. Ask <b>Scott</b> for more details.</h6>
     """, unsafe_allow_html=True
     )

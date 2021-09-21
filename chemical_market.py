@@ -160,6 +160,7 @@ else:
 st.markdown(
     """
     <br>
+    <h2>Zoom in to see agency and company names!</h2>
     <h4>Red circles represent federal agencies | Blue circles represent companies</h4>
     <h4>Line weight is proportional to contract size for the chemical group selected</h4>
     <h6></h6>

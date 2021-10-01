@@ -12,6 +12,7 @@ df_sub_data = pd.read_csv('data/sub_data.csv')
 # df_sub_list = pd.read_csv('data/sub_list.csv')
 
 # Set header title
+st.image('data/logo.png', width=200)
 st.title('Network Graph Visualization of the Federal Chemical Market')
 
 # Define list of selection options and sort alphabetically
